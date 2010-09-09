@@ -1,0 +1,98 @@
+##########################################################################
+####        Given - You have an Ubuntu 10.04 (ubuntu-10.04.1-desktop-i386.iso)
+####        And   - You want to setup rvm with rails 3
+####        Then  - Follow the directions below :)
+####        
+####        Directions by - Juan Leal  
+####                        sellingangle@hotmail.com
+##########################################################################
+
+# Important Notes
+#   To install gems in rvm DO NOT USE SUDO! rvm sets up it's own environment.
+#   If you have a better way, good for you. This is what works for me but by 
+#      all means share.
+
+
+Install required packages by running enclosed script
+   
+  ./install_packages.sh
+
+
+
+Install rvm
+
+   bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
+
+   
+   
+Install the readline package into rvm to fix error that occurs when running 'rails console'   
+
+  rvm package install readline
+
+  
+  
+Install ruby 1.9.2 under rvm with this option to avoid missing openssl library 
+issues and follow subsequent installation instruction that will be shown
+on the console screen
+
+   rvm install 1.9.2 -C --with-openssl-dir=$HOME/.rvm/usr --with-readline-dir=$HOME/.rvm/usr
+
+
+To get openvpn going create a directory in your home directory to store you vpn files,
+cd into that directory and launch openvpn using the ovpn config file.
+ 
+   mkdir ~/.openvpn
+   cd ~/.openvpn
+   openvpn --config countrystone.ovpn
+
+
+
+Make sure to use ruby 1.9.2 and verify this is being used
+
+   rvm use 1.9.2
+   ruby -v
+   
+   
+Inorder to get ruby-debug working in rails 3 when issuing 'rails server --debug' do the following.
+Part A) Install these gems.
+
+   gem install ruby-debug19
+   gem install ruby-debug-ide19
+
+Part B) Add this line to the Gemfile of any project you want to debug
+
+   gem 'ruby-debug19', :require => 'ruby-debug'
+   
+   
+
+Install bundler in case it's not installed. Note: Install gems WITHOUT sudo in order for them to
+be installed properly in the rvm enviornment.
+
+   gem install bundler
+
+
+
+Change into your rails project root
+
+   cd my_rails_project
+
+
+
+Install required gems using bundler
+
+   bundle install
+
+
+
+Setup postgresql server if you need it.
+
+    sudo -u postgres createuser --superuser $USER   # => creates a superuser account for your login
+    sudo -u postgres psql
+    postgres=# \password $USER                      # => create a password for you login 
+                                                    # (use your login name rather than $USER)
+
+
+
+
+   
+
